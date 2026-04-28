@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SaathiCare - Donate with Love</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .hero-gradient {
+            background: radial-gradient(circle at top right, #fef2f2 0%, #fff 50%, #fff1f2 100%);
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-premium {
+            background: linear-gradient(135deg, #db2777 0%, #be123c 100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-premium:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(219, 39, 119, 0.4);
+        }
+
+        .feature-card {
+            transition: all 0.4s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        @keyframes blob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+
+        .animate-blob {
+            animation: blob 7s infinite alternate;
+        }
+
+        .delay-2000 { animation-delay: 2s; }
+    </style>
+</head>
+<body class="bg-white">
+    <!-- Navbar -->
+    <nav class="glass-nav fixed top-0 w-full z-50">
+        <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="index.html" class="text-2xl font-bold text-gray-800 tracking-tight">
+                🌱Saathi<span class="text-pink-600">Care</span>
+            </a>
+            
+            <div class="hidden md:flex items-center gap-10">
+                <a href="index.html" class="text-sm font-semibold text-gray-600 hover:text-pink-600 transition">Home</a>
+                <a href="about.html" class="text-sm font-semibold text-gray-600 hover:text-pink-600 transition">About</a>
+                <a href="contact.html" class="text-sm font-semibold text-gray-600 hover:text-pink-600 transition">Contact</a>
+                <a href="faq.html" class="text-sm font-semibold text-gray-600 hover:text-pink-600 transition">FAQ</a>
+                <a href="donororngo.html" class="btn-premium text-white px-8 py-3 rounded-full text-sm font-bold shadow-lg shadow-pink-100">Get Started</a>
+            </div>
+
+            <button class="md:hidden text-gray-600"><i class="fas fa-bars text-xl"></i></button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient pt-32 pb-20 overflow-hidden relative">
+        <div class="absolute top-20 right-0 w-96 h-96 bg-pink-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
+        <div class="absolute bottom-20 left-10 w-72 h-72 bg-rose-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob delay-2000"></div>
+
+        <div class="container mx-auto px-6 flex flex-col md:flex-row items-center relative z-10">
+            <div class="md:w-1/2 text-center md:text-left">
+                <span class="inline-block px-4 py-1.5 bg-pink-50 text-pink-600 rounded-full text-xs font-bold mb-6 tracking-widest uppercase">Transforming Lives Through Giving</span>
+                <h1 class="text-5xl md:text-7xl font-bold text-gray-900 leading-[1.1] mb-8">
+                    Your <span class="text-pink-600">Kindness</span> is someone's <span class="text-pink-600">Hope.</span>
+                </h1>
+                <p class="text-gray-600 text-lg md:text-xl font-light mb-10 max-w-xl">
+                    SaathiCare connects your generosity with those who need it most. Every small gesture creates a ripple of hope that reaches far and wide.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center gap-4 justify-center md:justify-start">
+                    <a href="donororngo.html" class="btn-premium text-white px-10 py-5 rounded-2xl text-lg font-bold shadow-2xl text-center w-full sm:w-auto">Start Donating Now</a>
+                    <a href="about.html" class="px-10 py-5 text-gray-600 font-bold hover:text-pink-600 transition flex items-center gap-2">
+                        Learn How We Work <i class="fas fa-chevron-right text-sm"></i>
+                    </a>
+                </div>
+                
+                <div class="mt-12 flex items-center justify-center md:justify-start gap-12">
+                    <div class="text-center md:text-left">
+                        <p class="text-3xl font-bold text-gray-900">1.2K+</p>
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Donations</p>
+                    </div>
+                    <div class="text-center md:text-left">
+                        <p class="text-3xl font-bold text-gray-900">50+</p>
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Partner NGOs</p>
+                    </div>
+                    <div class="text-center md:text-left">
+                        <p class="text-3xl font-bold text-gray-900">10K+</p>
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Lives Touched</p>
+                    </div>
+                </div>
+            </div>
+            <div class="md:w-1/2 mt-20 md:mt-0 relative flex justify-center">
+                <div class="relative w-full max-w-lg">
+                    <img src="kapde-removebg-preview.png" alt="SaathiCare" class="relative z-20 w-full drop-shadow-2xl animate-float" style="animation: float 6s ease-in-out infinite" />
+                    <div class="absolute -bottom-10 -right-10 w-64 h-64 bg-pink-100 rounded-full -z-10 blur-2xl opacity-50"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="py-24 bg-white">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-xs font-bold text-pink-600 uppercase tracking-[0.2em] mb-4">Our Process</h2>
+            <h3 class="text-4xl md:text-5xl font-bold text-gray-900 mb-16">Simple Steps to Make an Impact</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div class="feature-card p-10 rounded-[3rem] bg-pink-50/50 border border-pink-50">
+                    <div class="w-20 h-20 bg-pink-100 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-inner shadow-pink-200/50">
+                        <i class="fas fa-gift text-3xl text-pink-600"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold text-gray-900 mb-4">List Your Items</h4>
+                    <p class="text-gray-500 font-light leading-relaxed">Simply upload photos and details of pre-loved clothes, toys, or books from your home.</p>
+                </div>
+
+                <div class="feature-card p-10 rounded-[3rem] bg-rose-50/50 border border-rose-50 md:translate-y-8">
+                    <div class="w-20 h-20 bg-rose-100 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-inner shadow-rose-200/50">
+                        <i class="fas fa-hand-holding-heart text-3xl text-rose-600"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold text-gray-900 mb-4">NGOs Request</h4>
+                    <p class="text-gray-500 font-light leading-relaxed">Verified NGOs browse items and request what they need for their specific beneficiaries.</p>
+                </div>
+
+                <div class="feature-card p-10 rounded-[3rem] bg-pink-50/50 border border-pink-50">
+                    <div class="w-20 h-20 bg-pink-100 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-inner shadow-pink-200/50">
+                        <i class="fas fa-truck text-3xl text-pink-600"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold text-gray-900 mb-4">Direct Pickup</h4>
+                    <p class="text-gray-500 font-light leading-relaxed">Once accepted, your items are picked up from your doorstep and delivered directly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 pt-20 pb-10 border-t border-gray-100">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                <div>
+                    <a href="index.html" class="text-2xl font-bold text-gray-800 mb-6 block">🌱SaathiCare</a>
+                    <p class="text-gray-400 font-light text-sm leading-relaxed">Connecting generosity with need through a transparent, seamless platform. Making giving a part of daily life.</p>
+                </div>
+                <div>
+                    <h5 class="text-gray-900 font-bold mb-6">Quick Links</h5>
+                    <ul class="space-y-4 text-sm text-gray-500">
+                        <li><a href="index.html" class="hover:text-pink-600 transition">Home</a></li>
+                        <li><a href="about.html" class="hover:text-pink-600 transition">About Us</a></li>
+                        <li><a href="contact.html" class="hover:text-pink-600 transition">Contact</a></li>
+                        <li><a href="faq.html" class="hover:text-pink-600 transition">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-gray-900 font-bold mb-6">Join Us</h5>
+                    <ul class="space-y-4 text-sm text-gray-500">
+                        <li><a href="loginsignup.html" class="hover:text-pink-600 transition">Sign In</a></li>
+                        <li><a href="donororngo.html" class="hover:text-pink-600 transition">Become a Donor</a></li>
+                        <li><a href="ngoregistration.html" class="hover:text-pink-600 transition">NGO Registration</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-gray-900 font-bold mb-6">Stay Connected</h5>
+                    <p class="text-gray-400 text-sm leading-relaxed">Email: atharvadhenge714@gmail.com<br>Phone: +91 7710869774</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-100 pt-8 text-center text-gray-400 text-xs">
+                <p>&copy; 2024 SaathiCare Foundation. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

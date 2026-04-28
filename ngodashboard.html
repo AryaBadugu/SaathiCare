@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NGO Dashboard - SaathiCare</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <style>
+        body { font-family: 'Outfit', sans-serif; background: radial-gradient(circle at top right, #fdf2f8 0%, #fff 50%, #fff1f2 100%); min-height: 100vh; }
+        .glass-sidebar { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(15px); border-right: 1px solid rgba(255, 255, 255, 0.3); }
+        .glass-card { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.4); transition: all 0.3s ease; }
+        .glass-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.05); }
+        .nav-link-active { background: linear-gradient(135deg, #db2777 0%, #be123c 100%); color: white !important; box-shadow: 0 10px 20px -5px rgba(219, 39, 119, 0.3); }
+        .premium-input { background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(0, 0, 0, 0.05); transition: all 0.3s ease; }
+        .premium-input:focus { border-color: #ec4899; box-shadow: 0 0 15px rgba(236, 72, 153, 0.1); outline: none; }
+        .btn-action { background: linear-gradient(135deg, #db2777 0%, #be123c 100%); transition: all 0.3s ease; }
+        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 15px 30px -5px rgba(219, 39, 119, 0.4); }
+    </style>
+</head>
+<body class="flex flex-col md:flex-row min-h-screen">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="glass-sidebar w-full md:w-72 flex-shrink-0 flex flex-col z-40 fixed md:relative h-full transform -translate-x-full md:translate-x-0 transition-transform duration-300">
+        <div class="p-8 text-2xl font-bold tracking-tight text-gray-800">🌱Saathi<span class="text-pink-600">Care</span></div>
+        <nav class="flex-grow px-4 space-y-2">
+            <a href="#" id="nav-browse" class="nav-link nav-link-active flex items-center px-6 py-4 rounded-2xl text-sm font-semibold transition">
+                <i class="fas fa-search w-6 mr-3"></i>Browse Seeds
+            </a>
+            <a href="#" id="nav-requests" class="nav-link text-gray-500 hover:bg-white/50 flex items-center px-6 py-4 rounded-2xl text-sm font-semibold transition">
+                <i class="fas fa-tasks w-6 mr-3"></i>Our Requests
+            </a>
+            <a href="#" id="nav-tracking" class="nav-link text-gray-500 hover:bg-white/50 flex items-center px-6 py-4 rounded-2xl text-sm font-semibold transition">
+                <i class="fas fa-shipping-fast w-6 mr-3"></i>Deliveries
+            </a>
+            <a href="#" id="nav-profile" class="nav-link text-gray-500 hover:bg-white/50 flex items-center px-6 py-4 rounded-2xl text-sm font-semibold transition">
+                <i class="fas fa-building w-6 mr-3"></i>NGO Profile
+            </a>
+        </nav>
+        <div class="p-4 border-t border-white/20">
+            <button id="nav-logout" class="w-full flex items-center px-6 py-4 text-red-500 hover:bg-red-50 rounded-2xl text-sm font-bold transition">
+                <i class="fas fa-sign-out-alt w-6 mr-3"></i>Sign Out
+            </button>
+        </div>
+    </aside>
+
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/20 backdrop-blur-sm z-30 hidden md:hidden"></div>
+
+    <!-- Main Content -->
+    <main class="flex-grow p-6 md:p-12 overflow-y-auto">
+        <header class="flex justify-between items-center mb-10 md:hidden">
+            <button id="mobile-menu-btn" class="text-gray-800"><i class="fas fa-bars text-2xl"></i></button>
+            <div class="text-xl font-bold">🌱SaathiCare</div>
+            <div class="w-10"></div>
+        </header>
+
+        <!-- View: Browse -->
+        <div id="view-browse" class="space-y-10">
+            <div class="glass-card rounded-[3rem] p-10 md:p-14 relative overflow-hidden">
+                <div class="relative z-10">
+                    <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Hello, <span id="ngo-name-header" class="text-pink-600">...</span>! 🌟</h1>
+                    <p class="text-gray-500 text-lg font-light max-w-2xl">Discover available donations from generous people in your area.</p>
+                </div>
+                <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-rose-100 rounded-full blur-3xl opacity-40"></div>
+            </div>
+
+            <!-- Categories -->
+            <section class="glass-card rounded-[2.5rem] p-8">
+                <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-6">Filter by Category</h3>
+                <div class="flex flex-wrap gap-2" id="tag-buttons">
+                    <button class="tag-btn px-5 py-2.5 rounded-full text-xs font-bold border border-pink-100 text-pink-600 hover:bg-pink-50 transition" data-tag="Clothes">Clothes</button>
+                    <button class="tag-btn px-5 py-2.5 rounded-full text-xs font-bold border border-pink-100 text-pink-600 hover:bg-pink-50 transition" data-tag="Books">Books</button>
+                    <button class="tag-btn px-5 py-2.5 rounded-full text-xs font-bold border border-pink-100 text-pink-600 hover:bg-pink-50 transition" data-tag="Electronics">Electronics</button>
+                    <button class="tag-btn px-5 py-2.5 rounded-full text-xs font-bold border border-pink-100 text-pink-600 hover:bg-pink-50 transition" data-tag="Toys">Toys</button>
+                    <button class="tag-btn px-5 py-2.5 rounded-full text-xs font-bold border border-pink-100 text-pink-600 hover:bg-pink-50 transition" data-tag="Medical">Medical</button>
+                </div>
+            </section>
+
+            <div id="donations-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <!-- Cards will be injected here -->
+            </div>
+        </div>
+
+        <!-- View: Requests -->
+        <div id="view-requests" class="hidden space-y-10">
+            <h2 class="text-3xl font-bold text-gray-900">Request Tracker 📋</h2>
+            <div id="requests-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
+        </div>
+
+        <!-- View: Tracking -->
+        <div id="view-tracking" class="hidden space-y-10">
+            <h2 class="text-3xl font-bold text-gray-900">Active Deliveries 🚚</h2>
+            <div id="tracking-grid" class="space-y-6"></div>
+        </div>
+
+        <!-- View: Profile -->
+        <div id="view-profile" class="hidden space-y-10">
+            <h2 class="text-3xl font-bold text-gray-900">Organization Identity 🛡️</h2>
+            <div class="glass-card rounded-[3rem] p-10 md:p-14">
+                <form id="ngo-profile-form" class="space-y-8">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">NGO Name</label>
+                        <input id="profile-ngo-name" class="premium-input w-full p-4 rounded-2xl text-sm" />
+                    </div>
+                    <div class="grid grid-cols-2 gap-8">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Organization Type</label>
+                            <input id="profile-org-type" class="premium-input w-full p-4 rounded-2xl text-sm" />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Reg Number</label>
+                            <input id="profile-reg-number" class="premium-input w-full p-4 rounded-2xl text-sm" />
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Official Address</label>
+                        <textarea id="profile-address" rows="3" class="premium-input w-full p-4 rounded-2xl text-sm"></textarea>
+                    </div>
+                    <button class="btn-action w-full text-white p-5 rounded-2xl font-bold shadow-lg shadow-pink-100">Update Organization Profile</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modals -->
+    <div id="request-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] hidden items-center justify-center p-6">
+        <div class="bg-white rounded-[3rem] p-10 max-w-sm text-center shadow-2xl">
+            <div class="w-20 h-20 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-paper-plane text-3xl text-pink-600"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">Send Request?</h3>
+            <p class="text-gray-500 font-light mb-8">The donor will receive your request and contact you if approved.</p>
+            <div class="flex gap-4">
+                <button id="request-modal-cancel-btn" class="flex-1 bg-gray-100 text-gray-600 p-4 rounded-2xl font-bold">Cancel</button>
+                <button id="request-modal-confirm-btn" class="flex-1 btn-action text-white p-4 rounded-2xl font-bold">Request</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+             const session = await window.authHelper.checkAuth();
+             if(!session) { window.location.href = 'loginsignup.html'; return; }
+             
+             const currentUser = session.user;
+             let currentNgoProfile = null;
+             let selectedTag = null;
+             let curDonId = null;
+
+             async function init() {
+                 const { data } = await window.authHelper.supabase.from('ngo_profiles').select('*').eq('id', currentUser.id).single();
+                 currentNgoProfile = data;
+                 document.getElementById('ngo-name-header').textContent = data.ngo_name;
+                 fetchDonations();
+             }
+
+             function switchView(view) {
+                document.querySelectorAll('main > div').forEach(d => d.classList.add('hidden'));
+                document.getElementById(`view-${view}`).classList.remove('hidden');
+                document.querySelectorAll('.nav-link').forEach(l => {
+                    l.classList.remove('nav-link-active');
+                    l.classList.add('text-gray-500');
+                });
+                document.getElementById(`nav-${view}`).classList.add('nav-link-active');
+                if(view === 'browse') fetchDonations();
+                if(view === 'requests') fetchRequests();
+                if(view === 'tracking') fetchTracking();
+                if(view === 'profile') loadProfile();
+             }
+
+             document.querySelectorAll('.nav-link').forEach(l => {
+                 l.addEventListener('click', (e) => {
+                     e.preventDefault();
+                     switchView(e.currentTarget.id.replace('nav-', ''));
+                 });
+             });
+
+             document.getElementById('nav-logout').addEventListener('click', () => window.authHelper.logoutUser());
+
+             // Filters
+             document.querySelectorAll('.tag-btn').forEach(btn => {
+                 btn.addEventListener('click', () => {
+                     document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('bg-pink-600', 'text-white'));
+                     if(selectedTag === btn.dataset.tag) {
+                         selectedTag = null;
+                     } else {
+                         selectedTag = btn.dataset.tag;
+                         btn.classList.add('bg-pink-600', 'text-white');
+                     }
+                     fetchDonations();
+                 });
+             });
+
+             async function fetchDonations() {
+                 let q = window.authHelper.supabase.from('donations').select('*').eq('status', 'available');
+                 if(selectedTag) q = q.eq('item_tag', selectedTag);
+                 const { data } = await q.order('created_at', {ascending:false});
+                 
+                 const grid = document.getElementById('donations-grid');
+                 grid.innerHTML = data?.length ? '' : '<p class="text-gray-400 col-span-full text-center">No seeds available right now.</p>';
+                 data?.forEach(d => {
+                     const card = document.createElement('div');
+                     card.className = 'glass-card rounded-[2.5rem] overflow-hidden flex flex-col';
+                     const img = d.item_image_url ? d.item_image_url.split(',')[0] : 'https://placehold.co/400x300';
+                     card.innerHTML = `
+                        <img src="${img}" class="w-full h-40 object-cover">
+                        <div class="p-6 flex-grow flex flex-col">
+                            <h3 class="font-bold text-gray-900">${d.item_name}</h3>
+                            <p class="text-xs text-pink-600 font-bold mb-3 uppercase tracking-widest">${d.item_tag}</p>
+                            <p class="text-xs text-gray-500 mb-4 flex-grow">${d.description}</p>
+                            <button onclick="window.ask('${d.id}')" class="w-full btn-action text-white py-3 rounded-xl text-xs font-bold">Request This</button>
+                        </div>
+                     `;
+                     grid.appendChild(card);
+                 });
+             }
+
+             window.ask = (id) => {
+                 curDonId = id;
+                 document.getElementById('request-modal').classList.remove('hidden').style.display='flex';
+             }
+
+             document.getElementById('request-modal-confirm-btn').addEventListener('click', async () => {
+                 try {
+                     const { data: don } = await window.authHelper.supabase.from('donations').select('donor_id').eq('id', curDonId).single();
+                     await window.authHelper.supabase.from('donation_requests').insert([{
+                         donation_id: curDonId,
+                         ngo_id: currentUser.id,
+                         donor_id: don.donor_id,
+                         status: 'pending',
+                         request_message: `Heartfelt request from ${currentNgoProfile.ngo_name}`
+                     }]);
+                     await window.authHelper.supabase.from('donations').update({ status: 'requested' }).eq('id', curDonId);
+                     alert('Request sent!');
+                     window.location.reload();
+                 } catch(e) { alert(e.message); }
+             });
+
+             document.getElementById('request-modal-cancel-btn').addEventListener('click', () => {
+                 document.getElementById('request-modal').style.display='none';
+             });
+
+             async function fetchRequests() {
+                 const { data } = await window.authHelper.supabase.from('donation_requests').select('*, donations(item_name, item_image_url), donor_profiles(first_name, phone_number)').eq('ngo_id', currentUser.id).order('created_at', {ascending:false});
+                 const grid = document.getElementById('requests-grid');
+                 grid.innerHTML = data?.length ? '' : '<p class="text-gray-400">No requests made yet.</p>';
+                 data?.forEach(r => {
+                     const card = document.createElement('div');
+                     card.className = 'glass-card rounded-3xl p-6 flex gap-6';
+                     const img = r.donations.item_image_url ? r.donations.item_image_url.split(',')[0] : 'https://placehold.co/100';
+                     card.innerHTML = `
+                        <img src="${img}" class="w-24 h-24 rounded-2xl object-cover">
+                        <div class="flex-grow">
+                            <h4 class="font-bold text-gray-900">${r.donations.item_name}</h4>
+                            <p class="text-xs font-bold uppercase tracking-widest my-2 ${r.status === 'accepted' ? 'text-green-600' : 'text-yellow-600'}">${r.status}</p>
+                            ${r.status === 'accepted' ? `<p class="text-xs text-gray-500">Contact: ${r.donor_profiles.first_name} (${r.donor_profiles.phone_number})</p>` : ''}
+                        </div>
+                     `;
+                     grid.appendChild(card);
+                 });
+             }
+
+             async function fetchTracking() {
+                 const { data } = await window.authHelper.supabase.from('delivery_tracking').select('*, donations(item_name), donor_profiles(first_name)').eq('ngo_id', currentUser.id);
+                 const grid = document.getElementById('tracking-grid');
+                 grid.innerHTML = data?.length ? '' : '<p class="text-gray-400">No deliveries to track.</p>';
+                 data?.forEach(t => {
+                     const card = document.createElement('div');
+                     card.className = 'glass-card rounded-3xl p-6 flex justify-between items-center';
+                     card.innerHTML = `
+                        <div>
+                            <h4 class="font-bold text-gray-900">${t.donations.item_name}</h4>
+                            <p class="text-xs text-gray-400">From: ${t.donor_profiles.first_name}</p>
+                        </div>
+                        <div class="text-right">
+                             <span class="text-[10px] font-bold uppercase tracking-widest bg-pink-100 text-pink-600 px-3 py-1 rounded-full">${t.status}</span>
+                             ${t.status !== 'delivered' ? `<button onclick="window.finish('${t.id}')" class="block mt-2 text-xs font-bold text-green-600">Mark Received</button>` : ''}
+                        </div>
+                     `;
+                     grid.appendChild(card);
+                 });
+             }
+
+             window.finish = async (id) => {
+                 await window.authHelper.supabase.from('delivery_tracking').update({ status: 'delivered', actual_delivery_date: new Date().toISOString() }).eq('id', id);
+                 fetchTracking();
+             };
+
+             async function loadProfile() {
+                document.getElementById('profile-ngo-name').value = currentNgoProfile.ngo_name;
+                document.getElementById('profile-org-type').value = currentNgoProfile.org_type;
+                document.getElementById('profile-reg-number').value = currentNgoProfile.registration_number;
+                document.getElementById('profile-address').value = currentNgoProfile.address;
+             }
+
+             // Mobile menu
+            document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+                document.getElementById('sidebar').classList.remove('-translate-x-full');
+                document.getElementById('sidebar-overlay').classList.remove('hidden');
+            });
+            document.getElementById('sidebar-overlay').addEventListener('click', () => {
+                document.getElementById('sidebar').classList.add('-translate-x-full');
+                document.getElementById('sidebar-overlay').classList.add('hidden');
+            });
+
+             init();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NGO Registration - SaathiCare</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <style>
+        body { font-family: 'Outfit', sans-serif; background: radial-gradient(circle at top left, #fee2e2 0%, #fff 50%, #fef3c7 100%); min-height: 100vh; }
+        .glass-card { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: 0 25px 50px -12px rgba(219, 39, 119, 0.1); }
+        .premium-input { background: rgba(255, 255, 255, 0.9); border: 2px solid transparent; transition: all 0.3s ease; }
+        .premium-input:focus { border-color: #ec4899; box-shadow: 0 0 15px rgba(236, 72, 153, 0.15); background: white; }
+        .step-indicator { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #ec4899; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px; }
+        .valid-req { color: #10b981; }
+        .invalid-req { color: #94a3b8; }
+        input[type="file"]::file-selector-button { background: #fdf2f8; color: #db2777; border: none; padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-right: 12px; }
+    </style>
+</head>
+<body class="p-4 md:p-10 flex items-center justify-center">
+    <div class="glass-card rounded-[3rem] w-full max-w-4xl overflow-hidden flex flex-col lg:flex-row">
+        <!-- Sidebar -->
+        <div class="bg-gradient-to-br from-pink-600 to-rose-700 p-12 text-white lg:w-1/3 flex flex-col justify-between">
+            <div>
+                <a href="index.html" class="text-2xl font-bold mb-8 block">🌱SaathiCare</a>
+                <h1 class="text-4xl font-bold mb-6">Partner With Us</h1>
+                <p class="text-pink-100 font-light leading-relaxed mb-8">Join our network of verified NGOs and connect with a dedicated community of donors to fuel your mission.</p>
+            </div>
+            <div class="space-y-6">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center"><i class="fas fa-shield-alt"></i></div>
+                    <span class="text-sm">Verified Network</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center"><i class="fas fa-sync"></i></div>
+                    <span class="text-sm">Real-time Matching</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Area -->
+        <div class="p-8 lg:p-14 lg:w-2/3">
+            <header class="mb-10 text-center lg:text-left">
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">NGO Registration</h2>
+                <p class="text-gray-500 font-light">Complete the professional verification to join CareBloom.</p>
+            </header>
+
+            <form id="ngo-registration-form" class="space-y-8">
+                <section>
+                    <h3 class="text-xs font-bold text-pink-600 uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-pink-100 flex items-center justify-center text-[10px]">1</span>
+                        Organization Details
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="col-span-2 md:col-span-1">
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2">NGO Name</label>
+                            <input id="ngo-name" type="text" placeholder="Hope Foundation" class="premium-input w-full p-4 rounded-2xl text-sm" required />
+                        </div>
+                        <div class="col-span-2 md:col-span-1">
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2">Org Type</label>
+                            <select id="org-type" class="premium-input w-full p-4 rounded-2xl text-sm" required>
+                                <option value="">Select Type</option>
+                                <option>Trust</option>
+                                <option>Society</option>
+                                <option>Section 8 Company</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3 class="text-xs font-bold text-pink-600 uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-pink-100 flex items-center justify-center text-[10px]">2</span>
+                        Verification Info
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="col-span-2">
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2">Darpan Unique ID</label>
+                            <input id="darpan-id" type="text" placeholder="MH/2024/0000000" class="premium-input w-full p-4 rounded-2xl text-sm" required />
+                            <div id="darpan-feedback" class="text-[10px] mt-1 italic"></div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2">Reg Number</label>
+                            <input id="reg-number" type="text" placeholder="Reg-12345" class="premium-input w-full p-4 rounded-2xl text-sm" required />
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2">Reg Date</label>
+                            <input id="reg-date" type="date" class="premium-input w-full p-4 rounded-2xl text-sm" />
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3 class="text-xs font-bold text-pink-600 uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-pink-100 flex items-center justify-center text-[10px]">3</span>
+                        Contact & Location
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="col-span-2">
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2">Registered Address</label>
+                            <input id="address" type="text" placeholder="Registered Office Address in Mumbai" class="premium-input w-full p-4 rounded-2xl text-sm" required />
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2">Email</label>
+                            <input id="email" type="email" placeholder="contact@ngo.org" class="premium-input w-full p-4 rounded-2xl text-sm" required />
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2">Phone</label>
+                            <input id="contact-number" type="tel" placeholder="9876543210" class="premium-input w-full p-4 rounded-2xl text-sm" required />
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3 class="text-xs font-bold text-pink-600 uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-pink-100 flex items-center justify-center text-[10px]">4</span>
+                        Documents & Password
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2">Reg Certificate (PDF/Image)</label>
+                            <input id="reg-certificate" type="file" required class="text-xs" />
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2">Account Password</label>
+                            <input id="password" type="password" placeholder="••••••••" class="premium-input w-full p-4 rounded-2xl text-sm" required />
+                        </div>
+                    </div>
+                </section>
+
+                <button type="submit" id="submit-btn" class="w-full bg-pink-600 text-white p-5 rounded-2xl font-bold shadow-xl shadow-pink-100 hover:bg-pink-700 transition active:scale-[0.98] disabled:opacity-50">
+                    Submit Registration
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div id="error-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-6 z-[100]">
+        <div class="bg-white rounded-[3rem] p-10 max-w-sm text-center shadow-2xl">
+            <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-times text-3xl text-red-600"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Verification Needed</h2>
+            <p id="modal-msg" class="text-gray-500 font-light mb-8">Your Darpan ID was not found in our pre-approved Mumbai network list.</p>
+            <button onclick="document.getElementById('error-modal').classList.add('hidden')" class="w-full bg-gray-900 text-white p-4 rounded-2xl font-bold">Try Again</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./auth.js"></script>
+    <script>
+        async function waitForAuthHelper(maxWaitMs = 20000) {
+            const startTime = Date.now();
+            let lastError = null;
+
+            while (Date.now() - startTime < maxWaitMs) {
+                try {
+                    if (window.authReady) await window.authReady;
+                    if (window.authHelper && typeof window.authHelper.signupNGO === 'function') {
+                        return window.authHelper;
+                    }
+                } catch (err) {
+                    lastError = err;
+                }
+                await new Promise((resolve) => setTimeout(resolve, 300));
+            }
+
+            throw new Error(lastError?.message || 'Authentication system (auth.js) failed to initialize completely. Please wait 2 seconds and try again or refresh.');
+        }
+
+        const form = document.getElementById('ngo-registration-form');
+        const darpanInput = document.getElementById('darpan-id');
+        const submitBtn = document.getElementById('submit-btn');
+
+        // Initial state
+        submitBtn.disabled = true;
+
+        darpanInput.addEventListener('blur', async () => {
+             const feedback = document.getElementById('darpan-feedback');
+             const val = darpanInput.value.trim();
+             if(!val) return;
+             
+             feedback.textContent = 'Verifying ID...';
+             feedback.className = 'text-[10px] mt-1 text-gray-400';
+
+             try {
+                const authHelper = await waitForAuthHelper();
+                const isApproved = await authHelper.verifyDarpanId(val);
+                if(isApproved) {
+                    feedback.textContent = '✅ Darpan ID Verified';
+                    feedback.className = 'text-[10px] mt-1 text-green-600';
+                    submitBtn.disabled = false;
+                } else {
+                    feedback.textContent = 'ID not in pre-approved list. Registration will continue for manual review.';
+                    feedback.className = 'text-[10px] mt-1 text-amber-600';
+                    submitBtn.disabled = false;
+                }
+             } catch(err) {
+                 feedback.textContent = 'Could not verify ID right now. Registration will continue for manual review.';
+                 feedback.className = 'text-[10px] mt-1 text-amber-600';
+                 submitBtn.disabled = false;
+             }
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i> Processing...';
+
+            const ngoData = {
+                ngoName: document.getElementById('ngo-name').value,
+                orgType: document.getElementById('org-type').value,
+                regNumber: document.getElementById('reg-number').value,
+                regDate: document.getElementById('reg-date').value,
+                address: document.getElementById('address').value,
+                city: 'Mumbai',
+                state: 'Maharashtra',
+                pincode: '400001',
+                contactNumber: document.getElementById('contact-number').value,
+                email: document.getElementById('email').value,
+                website: '',
+                password: document.getElementById('password').value,
+                darpanId: darpanInput.value
+            };
+
+            const files = {
+                regCertificate: document.getElementById('reg-certificate').files[0],
+                panCard: document.getElementById('reg-certificate').files[0] // Reusing for demo if not provided
+            };
+
+            try {
+                const authHelper = await waitForAuthHelper();
+                await authHelper.signupNGO(ngoData, files);
+            } catch(err) {
+                alert('Registration failed: ' + err.message);
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
+        });
+    </script>
+</body>
+</html>

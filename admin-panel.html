@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - SaathiCare</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .sidebar {
+            background: #0f172a;
+            color: white;
+        }
+    </style>
+</head>
+
+<body class="flex flex-col md:flex-row">
+
+
+    <aside class="sidebar w-full md:w-72 md:h-screen p-8 flex flex-col" id="main-sidebar">
+        <div class="text-2xl font-bold mb-12 tracking-tight">🌱Saathi<span class="text-pink-500">Care</span> Admin</div>
+        <nav class="flex-grow space-y-4">
+            <a href="#" class="flex items-center gap-4 text-pink-500 font-bold"><i class="fas fa-shield-check"></i>NGO
+                Verification</a>
+            <a href="index.html" class="flex items-center gap-4 text-gray-400 hover:text-white transition"><i
+                    class="fas fa-home"></i>Public Site</a>
+        </nav>
+        <button onclick="supabase.auth.signOut().then(() => window.location.href='loginsignup.html')"
+            class="text-gray-400 hover:text-white transition text-left mt-auto"><i
+                class="fas fa-sign-out-alt mr-3"></i>Sign Out</button>
+    </aside>
+
+    <main class="flex-grow p-6 md:p-12" id="main-content">
+        <header class="mb-12">
+            <h1 class="text-4xl font-bold text-gray-900 mb-2">NGO Verification Panel</h1>
+            <p class="text-gray-500">Review and verify Mumbai-based NGOs for the SaathiCare network.</p>
+        </header>
+
+        <section id="pending-ngos" class="grid grid-cols-1 gap-8">
+            <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Pending Requests</h2>
+            <!-- NGO Cards injected here -->
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = "https://ceorbsqwabgioxfcrqvv.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNlb3Jic3F3YWJnaW94ZmNycXZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzNDQ3OTMsImV4cCI6MjA3NDkyMDc5M30.rcmIGUIg1jeTXu0n6lc5Kpz3BLwmIzm2aOW4V6alOlU";
+        let supabase;
+        try {
+            if (window.supabase) {
+                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            } else {
+                console.error("Supabase library not found");
+            }
+        } catch (e) {
+            console.error("Failed to init supabase", e);
+        }
+
+        // Updated with your email
+        const ADMIN_EMAILS = ['admin@carebloom.com', 'me@gmail.com', 'atharvadhenge714@gmail.com'];
+
+        async function checkAdmin() {
+            try {
+                if (!supabase) {
+                    document.getElementById('auth-overlay').innerHTML = `
+                    <div class="text-center p-8">
+                        <i class="fas fa-exclamation-triangle text-4xl text-amber-500 mb-4"></i>
+                        <p class="text-gray-800 font-bold">Connection Error</p>
+                        <p class="text-gray-500 text-sm mt-2">Could not connect to the database. Please check your internet connection.</p>
+                        <button onclick="location.reload()" class="mt-6 bg-pink-600 text-white px-6 py-2 rounded-xl text-sm">Retry</button>
+                    </div>
+                `;
+                    return;
+                }
+
+                // Added timeout to prevent infinite hang
+                const timeoutPromise = new Promise((_, reject) =>
+                    setTimeout(() => reject(new Error('Connection timed out. Please check your internet connection.')), 8000)
+                );
+
+                const { data: { session }, error } = await Promise.race([
+                    supabase.auth.getSession(),
+                    timeoutPromise
+                ]);
+                if (error) throw error;
+
+                if (!session || !ADMIN_EMAILS.includes(session.user.email)) {
+                    alert('Admin Access Denied. Redirecting to home...');
+                    window.location.href = 'index.html';
+                    return;
+                }
+                document.getElementById('auth-overlay').remove();
+                document.getElementById('main-sidebar').classList.remove('hidden');
+                document.getElementById('main-content').classList.remove('hidden');
+                loadPendingNGOs();
+            } catch (err) {
+                console.error('Auth error:', err);
+                document.getElementById('auth-overlay').innerHTML = `
+                <div class="text-center p-8">
+                    <i class="fas fa-lock text-4xl text-rose-500 mb-4"></i>
+                    <p class="text-gray-800 font-bold">Authorization Failed</p>
+                    <p class="text-gray-500 text-sm mt-2">${err.message || 'An error occurred during verification.'}</p>
+                    <button onclick="window.location.href='loginsignup.html'" class="mt-6 bg-gray-900 text-white px-6 py-2 rounded-xl text-sm">Go to Login</button>
+                </div>
+            `;
+            }
+        }
+
+        async function loadPendingNGOs() {
+            const { data: ngos } = await supabase.from('ngo_profiles').select('*').eq('status', 'pending').order('created_at', { ascending: true });
+            const container = document.getElementById('pending-ngos');
+            if (!ngos || ngos.length === 0) {
+                container.innerHTML = '<div class="glass-card p-12 text-center rounded-[3rem] text-gray-400">All caught up! No pending verification requests.</div>';
+                return;
+            }
+
+            ngos.forEach(ngo => {
+                const card = document.createElement('div');
+                card.className = 'glass-card p-10 rounded-[3rem] flex flex-col md:flex-row gap-8 items-start hover:shadow-xl transition';
+                card.innerHTML = `
+                <div class="flex-grow">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">${ngo.ngo_name}</h3>
+                    <div class="grid grid-cols-2 gap-4 text-sm mb-6">
+                        <p class="text-gray-500">Reg No: <span class="text-gray-900 font-medium">${ngo.registration_number}</span></p>
+                        <p class="text-gray-500">Contact: <span class="text-gray-900 font-medium">${ngo.contact_phone}</span></p>
+                        <p class="text-gray-500">Darpan ID: <span class="text-gray-900 font-medium">${ngo.darpan_id}</span></p>
+                        <p class="text-gray-500">Email: <span class="text-gray-900 font-medium">${ngo.contact_email}</span></p>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-3 w-full md:w-48">
+                    <button onclick="approveNGO('${ngo.id}')" class="bg-emerald-500 text-white p-3 rounded-2xl font-bold text-sm">Approve</button>
+                    <button onclick="viewDocuments('${ngo.id}')" class="bg-blue-500 text-white p-3 rounded-2xl font-bold text-sm">Review Docs</button>
+                    <button onclick="rejectNGO('${ngo.id}')" class="bg-red-50 text-red-500 p-3 rounded-2xl font-bold text-sm">Reject</button>
+                </div>
+            `;
+                container.appendChild(card);
+            });
+        }
+
+        async function approveNGO(id) {
+            if (!confirm('Approve this NGO?')) return;
+            await supabase.from('ngo_profiles').update({ status: 'approved', verified_at: new Date().toISOString() }).eq('id', id);
+            location.reload();
+        }
+
+        async function viewDocuments(ngoId) {
+            const { data: docs } = await supabase.from('ngo_verification_docs').select('*').eq('ngo_id', ngoId);
+            if (!docs || docs.length === 0) { alert('No docs found'); return; }
+
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black/50 backdrop-blur-sm z-[300] flex items-center justify-center p-6';
+            modal.innerHTML = `
+            <div class="bg-white rounded-[3rem] p-10 w-full max-w-2xl">
+                <h3 class="text-2xl font-bold mb-6">Verification Documents</h3>
+                <div class="space-y-4 max-h-96 overflow-y-auto">
+                    ${docs.map(doc => `
+                        <div class="p-4 border rounded-2xl flex justify-between items-center">
+                            <span class="font-bold">${doc.document_type.replace('_', ' ')}</span>
+                            <button onclick="window.openUrl('${doc.file_path}')" class="text-blue-500 font-bold">View Source</button>
+                        </div>
+                    `).join('')}
+                </div>
+                <button onclick="this.parentElement.parentElement.remove()" class="w-full bg-gray-900 text-white p-4 rounded-2xl font-bold mt-8">Close</button>
+            </div>
+        `;
+            document.body.appendChild(modal);
+        }
+
+        window.openUrl = async (path) => {
+            const { data } = await supabase.storage.from('verification-docs').createSignedUrl(path, 300);
+            window.open(data.signedUrl, '_blank');
+        }
+
+        // checkAdmin(); 
+        loadPendingNGOs();
+    </script>
+</body>
+
+</html>

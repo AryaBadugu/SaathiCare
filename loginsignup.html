@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - SaathiCare</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: radial-gradient(circle at top left, #fee2e2 0%, #fff 50%, #fef3c7 100%);
+            min-height: 100vh;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 25px 50px -12px rgba(219, 39, 119, 0.1);
+        }
+
+        .premium-input {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid transparent;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .premium-input:focus {
+            border-color: #ec4899;
+            box-shadow: 0 0 15px rgba(236, 72, 153, 0.15);
+            background: white;
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .animate-enter { animation: fadeInScale 0.6s ease-out forwards; }
+    </style>
+</head>
+<body class="flex items-center justify-center p-6">
+    <div class="glass-card rounded-3xl w-full max-w-lg overflow-hidden animate-enter">
+        <div class="p-10 md:p-14">
+            <header class="text-center mb-10">
+                <a href="index.html" class="text-2xl font-bold text-gray-800 mb-6 block">🌱SaathiCare</a>
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h1>
+                <p class="text-gray-500 font-light">Join the community and continue your impact.</p>
+            </header>
+
+            <form id="login-form" class="space-y-6">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-2 uppercase tracking-wider">Email Address</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"><i class="far fa-envelope"></i></span>
+                        <input id="email" type="email" placeholder="john@example.com" class="premium-input w-full p-4 pl-12 rounded-2xl text-sm" required />
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider">Password</label>
+                        <a href="#" class="text-[10px] font-bold text-pink-600 hover:underline px-1">Forgot?</a>
+                    </div>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"><i class="fas fa-lock"></i></span>
+                        <input id="password" type="password" placeholder="••••••••" class="premium-input w-full p-4 pl-12 rounded-2xl text-sm" required />
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 px-1">
+                    <input type="checkbox" id="remember" class="w-4 h-4 rounded border-gray-300 text-pink-600 focus:ring-pink-500" />
+                    <label for="remember" class="text-xs text-gray-500">Keep me logged in</label>
+                </div>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-pink-600 to-rose-600 text-white p-4 rounded-2xl font-bold text-sm shadow-lg shadow-rose-200 hover:shadow-xl hover:-translate-y-0.5 transition active:scale-[0.98]">
+                    Sign In to Account
+                </button>
+            </form>
+
+            <footer class="mt-10 text-center">
+                <p class="text-xs text-gray-500">
+                    New to CareBloom? 
+                    <a href="donororngo.html" class="text-pink-600 font-bold hover:underline">Create an Account</a>
+                </p>
+            </footer>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./auth.js"></script>
+    <script>
+        async function waitForAuthHelper(maxWaitMs = 20000) {
+            const startTime = Date.now();
+            let lastError = null;
+
+            while (Date.now() - startTime < maxWaitMs) {
+                try {
+                    if (window.authReady) await window.authReady;
+                    if (window.authHelper && typeof window.authHelper.loginUser === 'function') {
+                        return window.authHelper;
+                    }
+                } catch (err) {
+                    lastError = err;
+                }
+                await new Promise((resolve) => setTimeout(resolve, 300));
+            }
+
+            throw new Error(lastError?.message || 'Authentication system (auth.js) failed to initialize completely. Please wait 2 seconds and try again or refresh.');
+        }
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fas fa-circle-notch fa-spin mr-2"></i> Signing In...`;
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            try {
+                const authHelper = await waitForAuthHelper();
+                await authHelper.loginUser(email, password);
+            } catch (error) {
+                alert('Login failed: ' + error.message);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
+        });
+    </script>
+</body>
+</html>

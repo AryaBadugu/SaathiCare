@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us - SaathiCare</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <style>
+        body { font-family: 'Outfit', sans-serif; scroll-behavior: smooth; }
+        .hero-gradient {
+            background: radial-gradient(circle at top right, #fef2f2 0%, #fff 50%, #fff1f2 100%);
+        }
+        .btn-premium {
+            background: linear-gradient(135deg, #db2777 0%, #be123c 100%);
+            transition: all 0.3s ease;
+        }
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .mission-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            transition: all 0.4s ease;
+        }
+        .mission-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(219, 39, 119, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <!-- Navbar -->
+    <nav class="glass-nav fixed top-0 w-full z-50">
+        <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="index.html" class="text-2xl font-bold text-gray-800 tracking-tight">
+                🌱Saathi<span class="text-pink-600">Care</span>
+            </a>
+            <div class="hidden md:flex items-center gap-10">
+                <a href="index.html" class="text-sm font-semibold text-gray-600 hover:text-pink-600 transition">Home</a>
+                <a href="about.html" class="text-sm font-semibold text-pink-600 transition">About</a>
+                <a href="contact.html" class="text-sm font-semibold text-gray-600 hover:text-pink-600 transition">Contact</a>
+                <a href="faq.html" class="text-sm font-semibold text-gray-600 hover:text-pink-600 transition">FAQ</a>
+                <a href="donororngo.html" class="btn-premium text-white px-8 py-3 rounded-full text-sm font-bold shadow-lg shadow-pink-100">Get Started</a>
+            </div>
+            <button class="md:hidden text-gray-600"><i class="fas fa-bars text-xl"></i></button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient pt-40 pb-24">
+        <div class="container mx-auto px-6 text-center">
+            <span class="inline-block px-4 py-1.5 bg-pink-50 text-pink-600 rounded-full text-xs font-bold mb-6 tracking-widest uppercase">Our Story</span>
+            <h1 class="text-5xl md:text-6xl font-bold text-gray-900 mb-8">Bridging the Gap Between <br/><span class="text-pink-600">Need and Generosity</span></h1>
+            <p class="text-gray-600 text-lg md:text-xl font-light max-w-3xl mx-auto leading-relaxed">
+                SaathiCare was born from a simple observation: there are millions of useful items lying idle in our homes, and millions of people who could desperately use them.
+            </p>
+        </div>
+    </section>
+
+    <!-- Mission & Vision -->
+    <section class="py-24 bg-white relative">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div class="space-y-12">
+                    <div class="mission-card p-10 rounded-[3rem]">
+                        <div class="w-16 h-16 bg-pink-100 rounded-2xl flex items-center justify-center mb-6">
+                            <i class="fas fa-bullseye text-2xl text-pink-600"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-900 mb-4">Our Mission</h2>
+                        <p class="text-gray-600 font-light leading-relaxed">
+                            To create a seamless and transparent platform where generosity thrives. We believe every item, no matter how small, can bring immense joy and relief to someone's life. We aim to empower individuals and NGOs to make a tangible difference.
+                        </p>
+                    </div>
+
+                    <div class="mission-card p-10 rounded-[3rem]">
+                        <div class="w-16 h-16 bg-rose-100 rounded-2xl flex items-center justify-center mb-6">
+                            <i class="fas fa-eye text-2xl text-rose-600"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-900 mb-4">Our Vision</h2>
+                        <p class="text-gray-600 font-light leading-relaxed">
+                            We envision a world where giving is an integral part of daily life, and no useful item goes to waste. Through technology and community, SaathiCare strives to build a sustainable cycle of kindness that supports the underprivileged.
+                        </p>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="rounded-[4rem] overflow-hidden shadow-2xl relative z-10">
+                        <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2013" alt="Giving" class="w-full object-cover h-[600px]" />
+                    </div>
+                    <div class="absolute -top-10 -right-10 w-64 h-64 bg-pink-100 rounded-full -z-10 blur-3xl opacity-50"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 pt-20 pb-10 border-t border-gray-100">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                <div>
+                    <a href="index.html" class="text-2xl font-bold text-gray-800 mb-6 block">🌱SaathiCare</a>
+                    <p class="text-gray-400 font-light text-sm leading-relaxed">Connecting generosity with need through a transparent, seamless platform. Making giving a part of daily life.</p>
+                </div>
+                <div>
+                    <h5 class="text-gray-900 font-bold mb-6">Quick Links</h5>
+                    <ul class="space-y-4 text-sm text-gray-500">
+                        <li><a href="index.html" class="hover:text-pink-600 transition">Home</a></li>
+                        <li><a href="about.html" class="hover:text-pink-600 transition">About Us</a></li>
+                        <li><a href="contact.html" class="hover:text-pink-600 transition">Contact</a></li>
+                        <li><a href="faq.html" class="hover:text-pink-600 transition">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-gray-900 font-bold mb-6">Join Us</h5>
+                    <ul class="space-y-4 text-sm text-gray-500">
+                        <li><a href="loginsignup.html" class="hover:text-pink-600 transition">Sign In</a></li>
+                        <li><a href="donororngo.html" class="hover:text-pink-600 transition">Become a Donor</a></li>
+                        <li><a href="ngoregistration.html" class="hover:text-pink-600 transition">NGO Registration</a></li>
+                    </ul>
+                </div>
+                    <p class="text-gray-500 text-sm leading-relaxed">Email: atharvadhenge714@gmail.com<br>Phone: +91 7710869774</p>
+            </div>
+            <div class="border-t border-gray-100 pt-8 text-center text-gray-400 text-xs">
+                <p>&copy; 2024 SaathiCare Foundation. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

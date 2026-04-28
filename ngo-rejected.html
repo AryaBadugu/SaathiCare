@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Rejected - SaathiCare</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-red-50 to-pink-50 min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-8 text-center">
+        <div class="mb-6">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-red-100 rounded-full">
+                <svg class="w-10 h-10 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </div>
+        </div>
+
+        <h1 class="text-2xl font-bold text-gray-800 mb-4">Registration Not Approved</h1>
+        
+        <div class="space-y-4 text-gray-600 mb-6">
+            <p class="text-lg">
+                We're sorry, but your NGO registration for 
+                <strong id="rejected-ngo-name" class="text-red-600"></strong> 
+                could not be approved at this time.
+            </p>
+            
+            <div id="rejection-reason" class="bg-red-50 border border-red-200 rounded-lg p-4 text-left">
+                <h3 class="font-semibold text-red-800 mb-2">Reason for Rejection:</h3>
+                <p id="rejection-notes" class="text-sm text-red-700">
+                    Loading rejection details...
+                </p>
+            </div>
+
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-left">
+                <h3 class="font-semibold text-yellow-800 mb-2">What you can do:</h3>
+                <ul class="text-sm text-yellow-700 space-y-1">
+                    <li>• Review the rejection reason above</li>
+                    <li>• Re-apply with corrected information</li>
+                    <li>• Ensure all documents are valid and clear</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="space-y-3">
+            <button onclick="reapply()" 
+                    class="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors">
+                Re-apply with Corrections
+            </button>
+
+            <button onclick="logout()" 
+                    class="w-full bg-gray-200 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors">
+                Log Out
+            </button>
+        </div>
+
+        <div class="mt-6 pt-6 border-t border-gray-200">
+            <p class="text-xs text-gray-500">
+                For assistance, contact our verification team at 
+                <a href="mailto:atharvadhenge714@gmail.com" class="text-red-600 hover:underline">atharvadhenge714@gmail.com</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('🔍 Checking NGO rejected page authentication...');
+            const session = await window.authHelper.checkAuth();
+            if (!session) {
+                window.location.href = 'loginsignup.html';
+                return;
+            }
+
+            const { data: ngoProfile, error } = await window.authHelper.supabase
+                .from('ngo_profiles')
+                .select('ngo_name, status, verification_notes')
+                .eq('id', session.user.id)
+                .single();
+            if (error || !ngoProfile) {
+                console.log('❌ No NGO profile found');
+                window.location.href = 'donororngo.html';
+                return;
+            }
+
+            if (ngoProfile.status === 'approved') {
+                console.log('✅ NGO approved, redirecting to dashboard');
+                window.location.href = 'ngodashboard.html';
+                return;
+            } else if (ngoProfile.status === 'pending') {
+                console.log('⏳ NGO still pending, redirecting to pending page');
+                window.location.href = 'ngo-pending.html';
+                return;
+            }
+
+            document.getElementById('rejected-ngo-name').textContent = ngoProfile.ngo_name;
+            if (ngoProfile.verification_notes) {
+                document.getElementById('rejection-notes').textContent = ngoProfile.verification_notes;
+            } else {
+                document.getElementById('rejection-notes').textContent = 
+                    'No specific reason provided. Please ensure all documents are valid and information is accurate.';
+            }
+        });
+
+        async function reapply() {
+    const confirmation = confirm(
+        'This will delete your current rejected application. You can re-register with the same email or use a different one. ' +
+        'All your previous data will be removed. Are you sure you want to continue?'
+    );
+    
+    if (!confirmation) {
+        return;
+    }
+
+    try {
+        const session = await window.authHelper.checkAuth();
+        if (!session) return;
+
+        const userId = session.user.id;
+        const userEmail = session.user.email;
+        
+        console.log('🗑️ Starting NGO data deletion for reapplication:', userId);
+
+        // Delete all NGO-related data
+        const { error: docsError } = await window.authHelper.supabase
+            .from('ngo_verification_docs')
+            .delete()
+            .eq('ngo_id', userId);
+        
+        if (docsError) {
+            console.error('Error deleting documents:', docsError);
+        }
+
+        // Delete NGO profile
+        const { error: profileError } = await window.authHelper.supabase
+            .from('ngo_profiles')
+            .delete()
+            .eq('id', userId);
+        
+        if (profileError) {
+            throw new Error('Failed to delete NGO profile: ' + profileError.message);
+        }
+
+        console.log('✅ NGO data deleted successfully, redirecting to registration...');
+
+        // Sign out and redirect WITHOUT pre-filling email
+        await window.authHelper.supabase.auth.signOut();
+        
+        setTimeout(() => {
+            // Just pass isReapplication flag, let user enter whatever email they want
+            window.location.href = `ngoregistration.html?isReapplication=true`;
+        }, 1000);
+
+    } catch (error) {
+        console.error('Error during reapplication:', error);
+        alert('Error deleting application: ' + error.message + '. Please contact support.');
+        await window.authHelper.logoutUser();
+    }
+}
+
+async function logout() {
+    await window.authHelper.logoutUser();
+}
+    </script>
+</body>
+</html>

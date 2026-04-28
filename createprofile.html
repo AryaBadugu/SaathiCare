@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Donor Profile - SaathiCare</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: radial-gradient(circle at top left, #fee2e2 0%, #fff 50%, #fef3c7 100%);
+            min-height: 100-vh;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 25px 50px -12px rgba(219, 39, 119, 0.1);
+        }
+
+        .premium-input {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid transparent;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .premium-input:focus {
+            border-color: #ec4899;
+            box-shadow: 0 0 15px rgba(236, 72, 153, 0.15);
+            background: white;
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-top: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .error-border {
+            border-color: #ef4444 !important;
+        }
+
+        .valid-req { color: #10b981; }
+        .invalid-req { color: #94a3b8; }
+        
+        .valid-req::before { content: '✓ '; font-weight: bold; }
+        .invalid-req::before { content: '○ '; }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        .floating-bg {
+            position: fixed;
+            z-index: -1;
+            filter: blur(80px);
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4 md:p-8">
+    <div class="floating-bg w-64 h-64 bg-pink-300 rounded-full top-10 left-10 animate-pulse"></div>
+    <div class="floating-bg w-96 h-96 bg-yellow-200 rounded-full bottom-10 right-10 animate-pulse" style="animation-delay: 2s"></div>
+
+    <div class="glass-card rounded-3xl w-full max-w-2xl overflow-hidden flex flex-col md:flex-row">
+        <!-- Left Sidebar: Info -->
+        <div class="bg-gradient-to-br from-pink-500 to-rose-600 p-8 text-white md:w-1/3 flex flex-col justify-between">
+            <div>
+                <a href="index.html" class="text-2xl font-bold mb-8 block">🌱SaathiCare</a>
+                <h2 class="text-3xl font-bold mb-4Leading-tight">Start Your Journey of Giving</h2>
+                <p class="text-pink-100 font-light text-sm">Join thousands of donors making a real difference in lives every day.</p>
+            </div>
+            <div class="space-y-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center"><i class="fas fa-check text-xs"></i></div>
+                    <span class="text-xs">Quick Registration</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center"><i class="fas fa-heart text-xs"></i></div>
+                    <span class="text-xs">Direct Impact</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: Form -->
+        <div class="p-8 md:w-2/3">
+            <header class="mb-6">
+                <h1 class="text-2xl font-bold text-gray-800">Create Donor Account</h1>
+                <p class="text-gray-500 text-sm">Enter your details to create your profile.</p>
+            </header>
+
+            <form id="signup-form" class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">First Name</label>
+                        <input id="first-name" type="text" placeholder="John" class="premium-input w-full p-3 rounded-xl text-sm" required />
+                        <div id="first-name-error" class="error-message hidden"></div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">Last Name</label>
+                        <input id="last-name" type="text" placeholder="Doe" class="premium-input w-full p-3 rounded-xl text-sm" required />
+                        <div id="last-name-error" class="error-message hidden"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">Email Address</label>
+                    <input id="email" type="email" placeholder="john@example.com" class="premium-input w-full p-3 rounded-xl text-sm" required />
+                    <div id="email-error" class="error-message hidden"></div>
+                </div>
+
+                <div class="relative">
+                    <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">Create Password</label>
+                    <div class="relative">
+                        <input id="password" type="password" placeholder="••••••••" class="premium-input w-full p-3 rounded-xl text-sm pr-10" required />
+                        <button type="button" id="togglePassword" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+                            <i class="fas fa-eye text-sm"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Password Strength Checklist -->
+                    <div id="password-checklist" class="mt-3 p-4 bg-white/50 rounded-xl border border-pink-100 hidden">
+                        <p class="text-[10px] font-bold text-gray-400 uppercase mb-2">Security Requirements</p>
+                        <ul class="grid grid-cols-2 gap-x-4 gap-y-1 text-[11px]">
+                            <li id="req-length" class="invalid-req">8+ Characters</li>
+                            <li id="req-upper" class="invalid-req">Uppercase Letter</li>
+                            <li id="req-lower" class="invalid-req">Lowercase Letter</li>
+                            <li id="req-number" class="invalid-req">One Number</li>
+                            <li id="req-special" class="invalid-req">Special Character</li>
+                            <li id="req-spaces" class="valid-req">No Spaces</li>
+                        </ul>
+                    </div>
+                    <div id="password-error" class="error-message hidden"></div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">WhatsApp Number</label>
+                    <input id="phone-number" type="tel" placeholder="9876543210" class="premium-input w-full p-3 rounded-xl text-sm" />
+                    <div id="phone-number-error" class="error-message hidden"></div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">Age</label>
+                        <input id="age" type="number" placeholder="25" class="premium-input w-full p-3 rounded-xl text-sm" />
+                        <div id="age-error" class="error-message hidden"></div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">Pincode</label>
+                        <input id="pin-code" type="number" placeholder="400001" class="premium-input w-full p-3 rounded-xl text-sm" />
+                        <div id="pin-code-error" class="error-message hidden"></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">City</label>
+                        <input id="city" value="Mumbai" readonly class="bg-gray-50/50 p-3 rounded-xl text-sm w-full font-medium text-gray-500 border-2 border-transparent" />
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">State</label>
+                        <input id="state" value="Maharashtra" readonly class="bg-gray-50/50 p-3 rounded-xl text-sm w-full font-medium text-gray-500 border-2 border-transparent" />
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wider">Pickup Address</label>
+                    <textarea id="address" placeholder="Enter your full home address for donation pickups..." class="premium-input w-full p-3 rounded-xl text-sm" rows="2"></textarea>
+                    <div id="address-error" class="error-message hidden"></div>
+                </div>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-pink-600 to-rose-600 text-white p-4 rounded-xl font-bold text-sm shadow-lg shadow-rose-200 hover:shadow-xl hover:-translate-y-0.5 transition active:scale-[0.98] mt-4">
+                    Create My Account
+                </button>
+
+                <p class="text-center text-xs text-gray-400 pt-2">
+                    Already part of the community? <a href="loginsignup.html" class="text-pink-600 font-bold hover:underline">Log In</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./auth.js"></script>
+    <!-- Scripts moved to end of body for proper loading order -->
+    <script>
+        async function waitForAuthHelper(maxWaitMs = 20000) {
+            const startTime = Date.now();
+            let lastError = null;
+
+            while (Date.now() - startTime < maxWaitMs) {
+                try {
+                    if (window.authReady) await window.authReady;
+                    if (window.authHelper && typeof window.authHelper.signupDonor === 'function') {
+                        return window.authHelper;
+                    }
+                } catch (err) {
+                    lastError = err;
+                }
+                await new Promise((resolve) => setTimeout(resolve, 300));
+            }
+
+            throw new Error(lastError?.message || 'Authentication system (auth.js) failed to initialize completely. Please wait 2 seconds and try again or refresh.');
+        }
+
+        const passwordInput = document.getElementById('password');
+        const checklist = document.getElementById('password-checklist');
+        const toggleBtn = document.getElementById('togglePassword');
+
+        const requirements = {
+            'req-length': /.{8,}/,
+            'req-upper': /[A-Z]/,
+            'req-lower': /[a-z]/,
+            'req-number': /[0-9]/,
+            'req-special': /[!@#$%^&*(),.?":{}|<>]/,
+            'req-spaces': /^\S*$/
+        };
+
+        // Show checklist & validate on interaction
+        passwordInput.addEventListener('focus', () => checklist.classList.remove('hidden'));
+        passwordInput.addEventListener('input', () => {
+            Object.keys(requirements).forEach(id => {
+                const isValid = requirements[id].test(passwordInput.value);
+                const el = document.getElementById(id);
+                el.className = isValid ? 'valid-req' : 'invalid-req';
+            });
+        });
+
+        toggleBtn.addEventListener('click', () => {
+            const isText = passwordInput.type === 'text';
+            passwordInput.type = isText ? 'password' : 'text';
+            toggleBtn.innerHTML = `<i class="fas fa-${isText ? 'eye' : 'eye-slash'} text-sm"></i>`;
+        });
+
+        function showError(id, msg) {
+            const input = document.getElementById(id);
+            const error = document.getElementById(`${id}-error`);
+            input.classList.add('error-border');
+            error.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${msg}`;
+            error.classList.remove('hidden');
+        }
+
+        function clearErrors() {
+            document.querySelectorAll('input, textarea').forEach(el => el.classList.remove('error-border'));
+            document.querySelectorAll('.error-message').forEach(el => el.classList.add('hidden'));
+        }
+
+        document.getElementById('signup-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearErrors();
+            
+            const userData = {
+                firstName: document.getElementById('first-name').value.trim(),
+                lastName: document.getElementById('last-name').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                password: passwordInput.value,
+                phoneNumber: document.getElementById('phone-number').value.trim(),
+                age: document.getElementById('age').value,
+                city: 'Mumbai',
+                state: 'Maharashtra',
+                pinCode: document.getElementById('pin-code').value.trim(),
+                address: document.getElementById('address').value.trim()
+            };
+
+            let hasError = false;
+
+            // Name Validation
+            if (userData.firstName.length < 2) { showError('first-name', 'First name is too short'); hasError = true; }
+            if (userData.lastName.length < 2) { showError('last-name', 'Last name is too short'); hasError = true; }
+            
+            // Password Validation
+            const allValid = Object.values(requirements).every(reg => reg.test(userData.password));
+            if (!allValid) { showError('password', 'Password requirements not met'); hasError = true; }
+
+            // Address Validation
+            if (!userData.address) { showError('address', 'Pickup address is required for donation collections'); hasError = true; }
+
+            // Pincode Validation
+            if (userData.pinCode && !/^\d{6}$/.test(userData.pinCode)) { showError('pin-code', 'Invalid 6-digit pincode'); hasError = true; }
+
+            if (hasError) return;
+
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fas fa-circle-notch fa-spin mr-2"></i> Creating Account...`;
+
+            try {
+                const authHelper = await waitForAuthHelper();
+                await authHelper.signupDonor(userData);
+            } catch (err) {
+                alert('Registration failed: ' + err.message);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `Create My Account`;
+            }
+        });
+    </script>
+</body>
+</html>

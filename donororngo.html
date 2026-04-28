@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Join Us - SaathiCare</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: radial-gradient(circle at top left, #fee2e2 0%, #fff 50%, #fef3c7 100%);
+            min-height: 100vh;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 25px 50px -12px rgba(219, 39, 119, 0.1);
+        }
+
+        .choice-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: rgba(255, 255, 255, 0.6);
+            border: 2px solid transparent;
+        }
+
+        .choice-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            background: white;
+            border-color: #ec4899;
+            box-shadow: 0 20px 40px rgba(236, 72, 153, 0.15);
+        }
+
+        .choice-card:hover .icon-box {
+            background: #fdf2f8;
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .icon-box {
+            transition: all 0.4s ease;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-down { animation: fadeInDown 0.8s ease-out forwards; }
+    </style>
+</head>
+<body class="flex items-center justify-center p-6">
+    <div class="max-w-4xl w-full">
+        <header class="text-center mb-12 animate-fade-down">
+            <a href="index.html" class="text-3xl font-bold text-gray-800 mb-4 block">🌱Saathi<span class="text-pink-600">Care</span></a>
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight mb-4">Choose Your Path</h1>
+            <p class="text-gray-500 text-lg md:text-xl font-light">Join our community and start making an impact today.</p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Donor Option -->
+            <a href="createprofile.html" class="choice-card glass-card p-10 rounded-3xl group text-center cursor-pointer">
+                <div class="icon-box w-24 h-24 bg-pink-100 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-inner shadow-pink-200/50">
+                    <i class="fas fa-hand-holding-heart text-4xl text-pink-600"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-4 group-hover:text-pink-600 transition-colors">I am a Donor</h2>
+                <p class="text-gray-500 leading-relaxed mb-8">Donate pre-loved items, track your impact, and earn rewards while helping those in need.</p>
+                <div class="inline-flex items-center gap-2 text-pink-600 font-bold group-hover:gap-4 transition-all">
+                    Start Donating <i class="fas fa-arrow-right"></i>
+                </div>
+            </a>
+
+            <!-- NGO Option -->
+            <a href="ngoregistration.html" class="choice-card glass-card p-10 rounded-3xl group text-center cursor-pointer">
+                <div class="icon-box w-24 h-24 bg-rose-100 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-inner shadow-rose-200/50">
+                    <i class="fas fa-hospital-user text-4xl text-rose-600"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-4 group-hover:text-rose-600 transition-colors">I am an NGO</h2>
+                <p class="text-gray-500 leading-relaxed mb-8">Register your organization, request essential items, and connect with a network of generous donors.</p>
+                <div class="inline-flex items-center gap-2 text-rose-600 font-bold group-hover:gap-4 transition-all">
+                    Register NGO <i class="fas fa-arrow-right"></i>
+                </div>
+            </a>
+        </div>
+
+        <footer class="mt-16 text-center text-gray-400 text-sm">
+            <p>Already have an account? <a href="loginsignup.html" class="text-pink-600 font-bold hover:underline">Sign In here</a></p>
+        </footer>
+    </div>
+</body>
+</html>
